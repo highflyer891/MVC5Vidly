@@ -1,8 +1,18 @@
-﻿@model Vidly.Models.Customers
+﻿@using System.ServiceModel.Security
+@model Vidly.Models.Customers
 @{
     ViewBag.Title = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>@Model.Name</h2>
+
+<ul>
+    <li>Membership Type: @Model.MembershipType.Name</li>
+    @if (Model.BirthDate != null)
+    {
+        <li>Birthdate: @String.Format("{0:M/d/yyyy}", Model.BirthDate.Value)</li>
+    }
+    
+</ul>
 
