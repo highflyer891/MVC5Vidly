@@ -58,18 +58,30 @@ namespace Vidly.Controllers
                         if (movie == null)
                                 return HttpNotFound();
             
-            var viewModel = new MovieFormViewModel
+            var viewModel = new MovieFormViewModel(movie)
 
             {
-                Movie = movie,
                 DropDownValue = _context.Genres.ToList()
              };
 
             return View("MovieForm", viewModel);
         }
-
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Save(Movie movie)
         {
+            if (movie.Id == 0)
+            {
+                movie.DateAdded = DateTime.Now;
+            }
+            if (!ModelState.IsValid)
+            {
+                var viewModel = new MovieFormViewModel(movie)
+                {
+                    DropDownValue = _context.Genres.ToList()
+                };
+                return View("MovieForm", viewModel);
+            }
 
             if(movie.Id == 0)
             {
